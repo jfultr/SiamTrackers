@@ -34,6 +34,10 @@ class ModelBuilder(nn.Module):
                                      **cfg.BAN.KWARGS)
 
     def template(self, z):
+        im_patch = torch.from_numpy(im_patch)
+        if cfg.CUDA:
+            im_patch = im_patch.cuda()
+
         zf = self.backbone(z)
         self.zf = zf
 

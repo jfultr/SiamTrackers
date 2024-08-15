@@ -7,7 +7,6 @@ from __future__ import unicode_literals
 
 import cv2
 import numpy as np
-import torch
 
 from nanotrack.core.config import cfg
 
@@ -88,7 +87,4 @@ class SiameseTracker(BaseTracker):
         im_patch = im_patch.transpose(2, 0, 1)
         im_patch = im_patch[np.newaxis, :, :, :]
         im_patch = im_patch.astype(np.float32)
-        im_patch = torch.from_numpy(im_patch)
-        if cfg.CUDA:
-            im_patch = im_patch.cuda()
         return im_patch
