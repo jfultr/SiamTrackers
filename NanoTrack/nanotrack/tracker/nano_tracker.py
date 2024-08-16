@@ -4,6 +4,7 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import numpy as np
+from scipy.special import softmax
 
 from nanotrack.core.config import cfg
 from nanotrack.tracker.base_tracker import SiameseTracker
@@ -36,9 +37,7 @@ class NanoTracker(SiameseTracker):
         return points
 
     def _convert_bbox(self, delta, point):
-        delta = delta.permute(1, 2, 3, 0).contiguous().view(4, -1)
-        delta = delta.detach().cpu().numpy()
-
+        delta = delta.transpose(1, 2, 3, 0).reshape(4, -1)
         delta[0, :] = point[:, 0] - delta[0, :] #x1
         delta[1, :] = point[:, 1] - delta[1, :] #y1
         delta[2, :] = point[:, 0] + delta[2, :] #x2
@@ -47,12 +46,8 @@ class NanoTracker(SiameseTracker):
         return delta
 
     def _convert_score(self, score):
-        if self.cls_out_channels == 1:
-            score = score.permute(1, 2, 3, 0).contiguous().view(-1)
-            score = score.sigmoid().detach().cpu().numpy()
-        else:
-            score = score.permute(1, 2, 3, 0).contiguous().view(self.cls_out_channels, -1).permute(1, 0)
-            score = score.softmax(1).detach()[:, 1].cpu().numpy()
+        score = score.transpose(1, 2, 3, 0).reshape(2, -1).transpose(1, 0)
+        score = softmax(score, axis=1)[:, 1]
         return score
 
     def _bbox_clip(self, cx, cy, width, height, boundary):
