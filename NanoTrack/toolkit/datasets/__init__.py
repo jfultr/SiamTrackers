@@ -9,6 +9,7 @@ from .got10k import GOT10kDataset
 from .dtb70 import DTB70Dataset
 from .uavdt import UAVDTDataset
 from .visdrone import VisDroneDataset
+from .ptbtir import PtbTirDataset
 
 class DatasetFactory(object):
     @staticmethod
@@ -47,6 +48,8 @@ class DatasetFactory(object):
             dataset = UAVDTDataset(**kwargs)
         elif 'VisDrone' ==name:
             dataset = VisDroneDataset(**kwargs)
+        elif 'PTB-TIR' ==name:
+            dataset = PtbTirDataset(**kwargs)
         else:
             raise Exception("unknow dataset {}".format(kwargs['name']))
         return dataset
