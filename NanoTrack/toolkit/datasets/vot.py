@@ -148,8 +148,7 @@ class VOTLTVideo(Video):
         self.gt_traj = [[0] if np.isnan(bbox[0]) else bbox
                 for bbox in self.gt_traj]  
         if not load_img:    
-            img_name = os.path.join(root, self.img_names[0])
-            img = np.array(Image.open(img_name), np.uint8)
+            img = np.array(Image.open(self.img_names[0]), np.uint8)
             self.width = img.shape[1]
             self.height = img.shape[0]
         self.confidence = {}
