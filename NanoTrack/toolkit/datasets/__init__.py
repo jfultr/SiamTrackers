@@ -50,6 +50,8 @@ class DatasetFactory(object):
             dataset = VisDroneDataset(**kwargs)
         elif 'PTB-TIR' ==name:
             dataset = PtbTirDataset(**kwargs)
+        elif 'BENCHMARK' == name:
+            dataset = GOT10kDataset(**kwargs)
         else:
             raise Exception("unknow dataset {}".format(kwargs['name']))
         return dataset

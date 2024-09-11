@@ -5,6 +5,7 @@ from __future__ import unicode_literals
 
 import numpy as np
 from scipy.special import softmax
+import cv2
 
 from nanotrack.core.config import cfg
 from nanotrack.tracker.base_tracker import SiameseTracker
@@ -79,6 +80,8 @@ class NanoTracker(SiameseTracker):
         z_crop = self.get_subwindow(img, self.center_pos,
                                     cfg.TRACK.EXEMPLAR_SIZE,
                                     s_z, self.channel_average)
+        # cv2.imwrite('debug_crop.jpg', z_crop)
+
         self.model.template(z_crop)
 
     def track(self, img):
